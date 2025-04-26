@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
-from pyzbar.pyzbar import decode
 from PIL import Image
 import os
 import logging
