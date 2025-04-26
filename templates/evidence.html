@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule Meeting</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .card {
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-alert {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .info-alert .fa-circle-info {
+      font-size: 1.2rem;
+    }
+
+    .avatar-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .avatar-group img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      margin-left: -10px;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .avatar-group img:hover {
+      transform: scale(1.1);
+    }
+
+    .avatar-group .badge {
+      background-color: #007bff;
+      color: #fff;
+      font-size: 0.8rem;
+      margin-left: -10px;
+    }
+
+    .btn {
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container mt-5">
+    <div class="card p-4">
+      <h3 class="card-title mb-3">Summary of EvidenceId: {{id}}</h3>
+
+      <!-- Title and Description -->
+      <div class="mb-3">
+        <span class="control mb-2" id="title">Enter title...</span>
+        <span class="control" id="para" style="height: auto; display: block;">Add description here...</span>
+      </div>
+      <div class="mb-3">
+        <span class="control mb-2" id="latitutes">Latitutes<span>
+      </div>
+      <div class="mb-3">
+        <span class="control mb-2" id="date">Latitutes<span>
+      </div>
+
+      <!-- Guests -->
+
+
+      <!-- Toggles -->
+      <div class="mb-3">
+        <div class="toggle-switch mb-2">
+          <span id="smallpara">Reminder (15 minutes before event)</span>
+
+        </div>
+        <div class="toggle-switch">
+          <span id="smpara">Recurring Meeting</span>
+        </div>
+        <img id="ipfsimg" style="width:520px;"/>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+  <script>
+    const contractAddress = "0x38C28A4b1301f5ed934Fc443aF4700B9FAfee9bA"; 
+    const abi = [{"type":"function","name":"addEvidence","stateMutability":"nonpayable","inputs":[{"name":"case_no","type":"uint256","components":null,"internalType":null},{"name":"fir_no","type":"uint256","components":null,"internalType":null},{"name":"ipfs","type":"string","components":null,"internalType":null},{"name":"content","type":"string","components":null,"internalType":null},{"name":"access","type":"bool","components":null,"internalType":null},{"name":"head","type":"address","components":null,"internalType":null},{"name":"latitude","type":"int256","components":null,"internalType":null},{"name":"longitude","type":"int256","components":null,"internalType":null}],"outputs":[]},{"type":"function","name":"addReport","stateMutability":"nonpayable","inputs":[{"name":"case_no","type":"uint256","components":null,"internalType":null},{"name":"fir_no","type":"uint256","components":null,"internalType":null},{"name":"ipfs","type":"string","components":null,"internalType":null},{"name":"content","type":"string","components":null,"internalType":null},{"name":"access","type":"bool","components":null,"internalType":null},{"name":"head","type":"address","components":null,"internalType":null},{"name":"latitude","type":"int256","components":null,"internalType":null},{"name":"longitude","type":"int256","components":null,"internalType":null}],"outputs":[]},{"type":"function","name":"getEvidence","stateMutability":"view","inputs":[{"name":"evidence_id","type":"uint256","components":null,"internalType":null}],"outputs":[{"name":"","type":"uint256","components":null,"internalType":null},{"name":"","type":"uint256","components":null,"internalType":null},{"name":"","type":"uint256","components":null,"internalType":null},{"name":"","type":"string","components":null,"internalType":null},{"name":"","type":"string","components":null,"internalType":null},{"name":"","type":"address","components":null,"internalType":null},{"name":"","type":"uint256","components":null,"internalType":null},{"name":"","type":"bool","components":null,"internalType":null},{"name":"","type":"int256","components":null,"internalType":null},{"name":"","type":"int256","components":null,"internalType":null}]},{"type":"function","name":"getReport","stateMutability":"view","inputs":[{"name":"report_id","type":"uint256","components":null,"internalType":null}],"outputs":[{"name":"","type":"uint256","components":null,"internalType":null},{"name":"","type":"uint256","components":null,"internalType":null},{"name":"","type":"uint256","components":null,"internalType":null},{"name":"","type":"string","components":null,"internalType":null},{"name":"","type":"string","components":null,"internalType":null},{"name":"","type":"address","components":null,"internalType":null},{"name":"","type":"uint256","components":null,"internalType":null},{"name":"","type":"bool","components":null,"internalType":null},{"name":"","type":"int256","components":null,"internalType":null},{"name":"","type":"int256","components":null,"internalType":null}]},{"type":"function","name":"changePeon","stateMutability":"nonpayable","inputs":[{"name":"input","type":"address","components":null,"internalType":null}],"outputs":[]},{"type":"function","name":"changeSHO","stateMutability":"nonpayable","inputs":[{"name":"input","type":"address","components":null,"internalType":null}],"outputs":[]},{"type":"function","name":"maxEvidence","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256","components":null,"internalType":null}]},{"type":"function","name":"maxReport","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256","components":null,"internalType":null}]}];
+
+
+    async function loadEvidence(evidenceId) {
+      if (!window.ethereum) {
+        alert("Please install MetaMask.");
+        return;
+      }
+  
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(contractAddress, abi, signer);
+      const readContract = contract.connect(provider); // 👈 this is the fix
+  
+      try {
+        const [evidence_id, case_no, fir_no, ipfs, content, head,time,access,latitude,longitude] = await readContract.getEvidence(evidenceId);
+  
+        document.getElementById("title").innerHTML = `<b>Case Number: </b>${case_no}  <b>FIR Number:</b> ${fir_no}<br><br>`;
+        document.getElementById("para").innerText = content;
+        document.getElementById("smallpara").innerHTML = `<b>Uploader: </b>${head}`;
+        document.getElementById("smpara").innerHTML = `<b>IPFS: </b>${ipfs}`;
+        const date = new Date(Number(time) * 1000);
+        const formattedDate = date.toLocaleString();
+        const lat = Number(latitude) / 1e15;
+        const long = Number(longitude) / 1e15;        
+        document.getElementById("latitutes").innerHTML = `<b>Latitude: </b>${lat} <b>Longitude: </b>${long}`;
+        document.getElementById("date").innerHTML = `<b>Date: </b>${formattedDate}`;
+        document.getElementById("ipfsimg").src = `https://coffee-implicit-trout-678.mypinata.cloud/ipfs/${ipfs}`;
+  
+      } catch (error) {
+        console.error("Error fetching evidence:", error);
+      }
+    }
+  
+    window.onload = () => loadEvidence({{id}});
+  </script>
+  
+</body>
+
+</html>

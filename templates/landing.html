@@ -1,0 +1,100 @@
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EviVault | Truth always wins</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Tailwind Config */
+        @layer utilities {
+            .gradient-bg {
+                background: rgb(192,110,104);
+            }
+        }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color:#C06E68;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navbar -->
+    <header class="flex justify-between items-center px-6 py-4 bg-white shadow-md">
+        <div class="flex items-center space-x-4">
+            <div class="logo-icon center">E</div>
+            <span class="text-xl font-bold text-gray-800">Evidence Vault</span>
+        </div>
+        <nav class="hidden md:flex space-x-6 text-gray-600">
+            <a href="#" class="hover:text-gray-800">Add Evidence </a>
+            <a href="#" class="hover:text-gray-800">All Evidences </a>
+        </nav>
+        <div class="hidden md:flex space-x-4">
+            <a href="{% url "dashboard" %}">
+            <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Dashboard</button></a>
+        </div>
+        <button id="mobile-menu-toggle" class="md:hidden text-gray-800">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden bg-white shadow-md">
+        <nav class="flex flex-col space-y-4 p-4 text-gray-600">
+            <a href="#" class="hover:text-gray-800">Add Evidence</a>
+            <a href="#" class="hover:text-gray-800">All Evidence</a>
+            <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">शुरू हो जाओ</button>
+        </nav>
+    </div>
+
+   <!-- Hero Section -->
+<section class="px-6 py-12 md:py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <!-- Left Content -->
+        <div>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 leading-tight">
+                 <span class="text-purple-600">"In a world of doubt, let the Evidence speaks the truth ."</span> 
+            </h1>
+            <p class="mt-4 text-gray-600">
+                In the pursuit of justice, evidence is everything — and nothing speaks louder than visual proof.
+                When every second matters, this system delivers reliable footage that stands up in court, supports investigations, and protects what matters most.
+            </p>
+            <div class="mt-6 flex space-x-4">
+                <a href="{% url "dashboard" %}">
+                    <button class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                        Get started for free
+                    </button>
+            </div>
+
+        </div>
+        <!-- Right Content -->
+        <div class="relative">
+            <div class="relative w-full h-96 md:h-[500px]">
+                <img src="{% static "/img/10653.jpg" %}" 
+                     alt="EHR Illustration" 
+                     class="w-full h-full object-cover rounded-lg shadow-lg">
+                <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-purple-100 to-purple-300 opacity-20 rounded-lg"></div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- JavaScript -->
+    <script>
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

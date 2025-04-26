@@ -1,0 +1,1388 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EviVault - Blockchain Evidence Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e429f;
+            --secondary: #10b981;
+            --secondary-dark: #059669;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --gray-dark: #334155;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            color: var(--dark);
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .badge-primary {
+            background-color: rgba(26, 86, 219, 0.1);
+            color: var(--primary);
+        }
+
+        .badge-secondary {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--secondary);
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 10px 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 100px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI3NjUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBmaWxsPSIjRjZGOEZCIiBkPSJNMCAwaDEyODB2NzY1SDB6Ii8+PHBhdGggZD0iTTE0NDAuNSAwdjc2NUgwVjB6IiBzdHJva2U9IiNFNkU4RUIiLz48cGF0aCBkPSJNMTI1OSA0MzMuNUw5OTYuMjYgMTY4Ljk5NCA3MzMuNTIgNDMzLjVsMjYyLjc0IDI2NC41MDZMMTIyNiA5NjUuNWwyNjIuNzQtMjY0LjUwNkwxNzUxLjQ4IDQzMy41IDE0ODguNzQgMTY4Ljk5NHoiIHN0cm9rZT0iI0U2RThFQiIvPjxwYXRoIGQ9Ik05OTYuMjYgMTY4Ljk5NEw3MzMuNTIgNDMzLjVsMjYyLjc0IDI2NC41MDZMMTIyNiA5NjUuNWwyNjIuNzQtMjY0LjUwNkwxNzUxLjQ4IDQzMy41bC0yNjIuNzQtMjY0LjUwNnoiIHN0cm9rZT0iI0U2RThFQiIvPjxwYXRoIGQ9Ik0xNzUxLjQ4IDQzMy41bC0yNjIuNzQtMjY0LjUwNkwxMjI2IDQzMy41bDI2Mi43NCAyNjQuNTA2eiIgc3Ryb2tlPSIjRTZFOEVCIi8+PHBhdGggZD0iTTEyMjYgNDMzLjVsLTI2Mi43NC0yNjQuNTA2TDcwMC41MiA0MzMuNWwyNjIuNzQgMjY0LjUwNnoiIHN0cm9rZT0iI0U2RThFQiIvPjxjaXJjbGUgZmlsbD0iI0Y2RjhGQiIgY3g9IjEyMjYiIGN5PSI0MzMuNSIgcj0iNiIvPjxnIHRyYW5zZm9ybT0icm90YXRlKDQ1IDcyOC41MjMgNDMzLjUwMykiPjxwYXRoIGQ9Ik01MTIuMjYgMTY4Ljk5NEwyNDkuNTIgNDMzLjVsMjYyLjc0IDI2NC41MDZMNzc1IDk2NS41bDI2Mi43NC0yNjQuNTA2eiIgc3Ryb2tlPSIjRTZFOEVCIi8+PHBhdGggZD0iTTUxMi4yNiAxNjguOTk0TDI0OS41MiA0MzMuNWwyNjIuNzQgMjY0LjUwNkw3NzUgOTY1LjVsMjYyLjc0LTI2NC41MDZMMTMwMC40OCA0MzMuNWwtMjYyLjc0LTI2NC41MDZMNzc1IDQzMy41bDI2Mi43NCAyNjQuNTA2eiIgc3Ryb2tlPSIjRTZFOEVCIi8+PHBhdGggZD0iTTc3NSA0MzMuNWwtMjYyLjc0LTI2NC41MDZMMjQ5LjUyIDQzMy41bDI2Mi43NCAyNjQuNTA2eiIgc3Ryb2tlPSIjRTZFOEVCIi8+PGNpcmNsZSBmaWxsPSIjRjZGOEZCIiBjeD0iNzc1IiBjeT0iNDMzLjUiIHI9IjYiLz48L2c+PHBhdGggZD0iTTEyMjYgNDMzLjVsLTI2Mi43NC0yNjQuNTA2TDcwMC41MiA0MzMuNWwyNjIuNzQgMjY0LjUwNnoiIHN0cm9rZT0iI0U2RThFQiIvPjxjaXJjbGUgZmlsbD0iI0Y2RjhGQiIgY3g9IjcwMC41MiIgY3k9IjQzMy41IiByPSI2Ii8+PGNpcmNsZSBmaWxsPSIjRjZGOEZCIiBjeD0iOTYzLjI2IiBjeT0iNjk4LjAwNiIgcj0iNiIvPjxjaXJjbGUgZmlsbD0iI0Y2RjhGQiIgY3g9Ijk2My4yNiIgY3k9IjE2OC45OTQiIHI9IjYiLz48Y2lyY2xlIGZpbGw9IiNGNkY4RkIiIGN4PSIxNDg4Ljc0IiBjeT0iNDMzLjUiIHI9IjYiLz48Y2lyY2xlIGZpbGw9IiNGNkY4RkIiIGN4PSI3MzMuNTIiIGN5PSI0MzMuNSIgcj0iNiIvPjxjaXJjbGUgc3Ryb2tlPSIjRTZFOEVCIiBjeD0iMTIyNiIgY3k9IjQzMy41IiByPSI2Ii8+PGNpcmNsZSBzdHJva2U9IiNFNkU4RUIiIGN4PSI5NjMuMjYiIGN5PSI2OTguMDA2IiByPSI2Ii8+PGnpcmNsZSBzdHJva2U9IiNFNkU4RUIiIGN4PSI5NjMuMjYiIGN5PSIxNjguOTk0IiByPSI2Ii8+PGnpcmNsZSBzdHJva2U9IiNFNkU4RUIiIGN4PSIxNDg4Ljc0IiBjeT0iNDMzLjUiIHI9IjYiLz48Y2lyY2xlIHN0cm9rZT0iI0U2RThFQiIgY3g9IjczMy41MiIgY3k9IjQzMy41IiByPSI2Ii8+PC9nPjwvc3ZnPg==');
+            background-size: cover;
+            opacity: 0.4;
+            z-index: -1;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--dark);
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 32px;
+            max-width: 600px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .hero-image {
+            flex: 1;
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Features Section */
+        .features {
+            background-color: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .feature-icon.blue {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+
+        .feature-icon.green {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+        }
+
+        .feature-icon.orange {
+            background: linear-gradient(135deg, var(--warning) 0%, #dd6b20 100%);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: var(--dark);
+        }
+
+        .feature-card p {
+            color: var(--gray);
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            background-color: var(--light);
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            gap: 30px;
+            position: relative;
+        }
+
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 80px;
+            left: 35px;
+            width: 2px;
+            height: calc(100% + 30px);
+            background-color: var(--gray-light);
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            z-index: 2;
+        }
+
+        .step-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: var(--dark);
+        }
+
+        .step-content p {
+            color: var(--gray);
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            background-color: white;
+        }
+
+        .testimonials-slider {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonial-slide {
+            background-color: white;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            display: none;
+        }
+
+        .testimonial-slide.active {
+            display: block;
+        }
+
+        .testimonial-quote {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--gray-dark);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .testimonial-quote::before,
+        .testimonial-quote::after {
+            content: '"';
+            font-size: 3rem;
+            color: var(--primary);
+            opacity: 0.2;
+            position: absolute;
+        }
+
+        .testimonial-quote::before {
+            top: -20px;
+            left: -10px;
+        }
+
+        .testimonial-quote::after {
+            bottom: -40px;
+            right: -10px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .testimonial-author img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 16px;
+        }
+
+        .testimonial-author h4 {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+            color: var(--dark);
+        }
+
+        .testimonial-author p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .testimonial-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--gray-light);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: var(--primary);
+        }
+
+        /* Pricing Section */
+        .pricing {
+            background-color: var(--light);
+        }
+
+        .pricing-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .pricing-toggle span {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--gray);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+            margin: 0 16px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--gray-light);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        .pricing-plans {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .pricing-plan {
+            background-color: white;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pricing-plan:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-plan.popular {
+            border: 2px solid var(--primary);
+            position: relative;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 0;
+            right: 30px;
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 0 0 8px 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--dark);
+        }
+
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 16px;
+        }
+
+        .plan-price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--gray);
+        }
+
+        .plan-description {
+            color: var(--gray);
+            margin-bottom: 24px;
+        }
+
+        .plan-features {
+            margin-bottom: 30px;
+        }
+
+        .plan-features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            color: var(--gray-dark);
+        }
+
+        .plan-features li i {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            color: white;
+        }
+
+        .cta p {
+            font-size: 1.1rem;
+            margin-bottom: 32px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .btn-white {
+            background-color: white;
+            color: var(--primary);
+        }
+
+        .btn-white:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .btn-outline-white {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn-outline-white:hover {
+            background-color: white;
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 80px 0 40px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .footer-about p {
+            color: var(--gray-light);
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+        }
+
+        .footer-links h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links ul li a {
+            color: var(--gray-light);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-bottom p {
+            color: var(--gray-light);
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-bottom-links a {
+            color: var(--gray-light);
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: white;
+        }
+
+        /* Blockchain Animation */
+        .blockchain-animation {
+            position: relative;
+            height: 100px;
+            margin: 40px 0;
+            overflow: hidden;
+        }
+
+        .chain-container {
+            display: flex;
+            position: absolute;
+            animation: moveChain 20s linear infinite;
+        }
+
+        .block {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            margin: 0 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .block::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            width: 20px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .block:last-child::after {
+            display: none;
+        }
+
+        @keyframes moveChain {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-content {
+                flex-direction: column;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-image {
+                margin-top: 40px;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .feature-card {
+                padding: 20px;
+            }
+
+            .step {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .step:not(:last-child)::after {
+                left: 35px;
+                top: 70px;
+                height: calc(100% - 40px);
+            }
+
+            .step-number {
+                margin: 0 auto;
+            }
+
+            .step-content {
+                text-align: center;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 15px 0;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .header-buttons .btn {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .mobile-menu {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: white;
+                z-index: 1001;
+                padding: 20px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .mobile-menu.active {
+                transform: translateX(0);
+            }
+
+            .mobile-menu-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 30px;
+            }
+
+            .mobile-menu-close {
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: var(--dark);
+            }
+
+            .mobile-menu ul {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .mobile-menu ul li a {
+                font-size: 1.2rem;
+                font-weight: 500;
+            }
+
+            .mobile-menu-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                margin-top: 30px;
+            }
+
+            .hero {
+                padding: 120px 0 60px;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+            }
+
+            .pricing-plans {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                justify-content: center;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .mobile-menu {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <div class="header-container">
+                <a href="#" class="logo">
+                    <i class="fas fa-link"></i>
+                    EviVault
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                    </ul>
+                </nav>
+                <div class="header-buttons">
+                    <a href="{% url "dashboard" %}" class="btn btn-primary">Dashboard</a>
+                </div>
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <a href="#" class="logo">
+                <i class="fas fa-link"></i>
+                EvidenceChain
+            </a>
+            <button class="mobile-menu-close" id="mobile-menu-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+        </ul>
+        <div class="mobile-menu-buttons">
+            <a href="{% url "dashboard" %}" class="btn btn-primary">Dashboard</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <span class="badge badge-primary">Blockchain-Powered</span>
+                    <h1>Secure Evidence Management for the Digital Age</h1>
+                    <p>EvidenceChain uses blockchain technology to ensure the integrity, security, and chain of custody for all your digital evidence. Tamper-proof, transparent, and court-admissible.</p>
+                    <div class="hero-buttons">
+                        <a href="#" class="btn btn-primary">Get Started</a>
+                        <a href="#" class="btn btn-outline">Watch Demo</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="{% static "img/hero.jpg" %}" alt="EvidenceChain Dashboard">
+                </div>
+            </div>
+            <div class="blockchain-animation">
+                <div class="chain-container">
+                    <div class="block"><i class="fas fa-fingerprint"></i></div>
+                    <div class="block"><i class="fas fa-camera"></i></div>
+                    <div class="block"><i class="fas fa-file-alt"></i></div>
+                    <div class="block"><i class="fas fa-video"></i></div>
+                    <div class="block"><i class="fas fa-microphone"></i></div>
+                    <div class="block"><i class="fas fa-database"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge badge-primary">Features</span>
+                <h2>Why Choose EvidenceChain?</h2>
+                <p>Our blockchain-powered platform offers unparalleled security and reliability for managing digital evidence.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon blue">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Immutable Records</h3>
+                    <p>Once evidence is stored on our blockchain, it cannot be altered or deleted, ensuring the integrity of your evidence is maintained.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon green">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <h3>Chain of Custody</h3>
+                    <p>Automatically track and record every interaction with evidence, creating a verifiable chain of custody that stands up in court.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon orange">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Advanced Encryption</h3>
+                    <p>Military-grade encryption protects your sensitive data while allowing authorized access with multi-factor authentication.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon blue">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Smart Search</h3>
+                    <p>Quickly find the evidence you need with our AI-powered search functionality that indexes all metadata and content.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon green">
+                        <i class="fas fa-file-export"></i>
+                    </div>
+                    <h3>Court-Ready Exports</h3>
+                    <p>Generate court-admissible reports with verification certificates that prove the authenticity of your evidence.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon orange">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Role-Based Access</h3>
+                    <p>Control who can view, edit, or export evidence with granular permission settings and detailed access logs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge badge-secondary">Process</span>
+                <h2>How EvidenceChain Works</h2>
+                <p>Our blockchain technology ensures a secure, transparent, and verifiable process for managing digital evidence.</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Capture & Upload</h3>
+                        <p>Collect digital evidence through our secure mobile app or web interface. All files are automatically timestamped and encrypted during upload.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Blockchain Verification</h3>
+                        <p>Each piece of evidence is hashed and recorded on the blockchain, creating an immutable record that proves authenticity and prevents tampering.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Secure Storage</h3>
+                        <p>Evidence is encrypted and stored in our secure cloud infrastructure with redundant backups, ensuring it's always available when needed.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Chain of Custody</h3>
+                        <p>Every access, view, or modification is automatically logged on the blockchain, creating a verifiable chain of custody record.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Court-Ready Export</h3>
+                        <p>Generate comprehensive reports with blockchain verification certificates that prove the evidence hasn't been tampered with.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge badge-primary">Testimonials</span>
+                <h2>Trusted by Law Enforcement and Legal Professionals</h2>
+                <p>See what our clients have to say about EvidenceChain's impact on their evidence management processes.</p>
+            </div>
+            <div class="testimonials-slider">
+                <div class="testimonial-slide active" id="testimonial-1">
+                    <div class="testimonial-quote">
+                        EvidenceChain has revolutionized how we manage digital evidence. The blockchain verification has been crucial in ensuring our evidence is admissible in court, and the chain of custody tracking has saved us countless hours of documentation.
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://via.placeholder.com/150/f0f9ff/1a56db?text=JD" alt="John Doe">
+                        <h4>Detective John Doe</h4>
+                        <p>Metro Police Department</p>
+                    </div>
+                </div>
+                <div class="testimonial-slide" id="testimonial-2">
+                    <div class="testimonial-quote">
+                        As a prosecutor, I need to be confident that the evidence I present hasn't been compromised. EvidenceChain's blockchain verification gives me that confidence, and the detailed audit trails make it easy to demonstrate chain of custody to judges and juries.
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://via.placeholder.com/150/f0f9ff/1a56db?text=JS" alt="Jane Smith">
+                        <h4>Jane Smith</h4>
+                        <p>District Attorney's Office</p>
+                    </div>
+                </div>
+                <div class="testimonial-slide" id="testimonial-3">
+                    <div class="testimonial-quote">
+                        Our firm handles sensitive digital evidence in high-profile cases. EvidenceChain's security features and immutable blockchain records have become an essential part of our practice, giving both us and our clients peace of mind.
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://via.placeholder.com/150/f0f9ff/1a56db?text=RJ" alt="Robert Johnson">
+                        <h4>Robert Johnson</h4>
+                        <p>Johnson & Partners Law Firm</p>
+                    </div>
+                </div>
+                <div class="testimonial-dots">
+                    <span class="dot active" data-slide="testimonial-1"></span>
+                    <span class="dot" data-slide="testimonial-2"></span>
+                    <span class="dot" data-slide="testimonial-3"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CTA Section -->
+    <section class="section cta">
+        <div class="container">
+            <h2>Ready to Secure Your Evidence Chain?</h2>
+            <p>Join hundreds of law enforcement agencies, legal firms, and corporate security teams who trust EvidenceChain to protect their most critical digital evidence.</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-white">Request Demo</a>
+                <a href="#" class="btn btn-outline-white">Contact Sales</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <a href="#" class="footer-logo">
+                        <i class="fas fa-link"></i>
+                        EvidenceChain
+                    </a>
+                    <p>Blockchain-powered evidence management system that ensures the integrity, security, and chain of custody for all your digital evidence.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Product</h3>
+                    <ul>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Blockchain</a></li>
+                        <li><a href="#">Integrations</a></li>
+                        <li><a href="#">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                        <li><a href="#">Webinars</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Partners</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 EvidenceChain. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        mobileMenuClose.addEventListener('click', function() {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Mobile menu links
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        // Testimonial slider
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach(dot => {
+            dot.addEventListener('click', function() {
+                const slideId = this.getAttribute('data-slide');
+                
+                // Hide all slides
+                document.querySelectorAll('.testimonial-slide').forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                
+                // Show selected slide
+                document.getElementById(slideId).classList.add('active');
+                
+                // Update active dot
+                dots.forEach(d => d.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Auto-rotate testimonials
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.testimonial-slide');
+        
+        function rotateTestimonials() {
+            // Hide all slides
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            // Show next slide
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+        
+        // Rotate every 5 seconds
+        setInterval(rotateTestimonials, 5000);
+
+        // Pricing toggle
+        const pricingToggle = document.getElementById('pricing-toggle');
+        const standardPrice = document.getElementById('standard-price');
+        const professionalPrice = document.getElementById('professional-price');
+        const enterprisePrice = document.getElementById('enterprise-price');
+        
+        pricingToggle.addEventListener('change', function() {
+            if (this.checked) {
+                // Annual pricing
+                standardPrice.innerHTML = '$4,789<span>/year</span>';
+                professionalPrice.innerHTML = '$9,589<span>/year</span>';
+                enterprisePrice.innerHTML = '$23,989<span>/year</span>';
+            } else {
+                // Monthly pricing
+                standardPrice.innerHTML = '$499<span>/month</span>';
+                professionalPrice.innerHTML = '$999<span>/month</span>';
+                enterprisePrice.innerHTML = '$2,499<span>/month</span>';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
